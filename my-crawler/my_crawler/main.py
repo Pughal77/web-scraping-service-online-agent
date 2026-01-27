@@ -7,7 +7,7 @@ async def main() -> None:
     crawler = PlaywrightCrawler(
         request_handler=router,
         headless=False,
-        max_requests_per_crawl=10,
+        max_requests_per_crawl=1,
         http_client=HttpxHttpClient(),
     )
 

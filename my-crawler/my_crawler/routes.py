@@ -1,5 +1,6 @@
 from crawlee.crawlers import PlaywrightCrawlingContext
 from crawlee.router import Router
+from .process_data import process_data
 
 router = Router[PlaywrightCrawlingContext]()
 
@@ -13,11 +14,13 @@ async def default_handler(context: PlaywrightCrawlingContext) -> None:
         {
             'url': context.request.loaded_url,
             'title': await title.inner_text() if title else None,
-            'content': (await context.page.content()),
+            'content': (await process_data(await context.page.content())),
         }
     )
 
     await context.enqueue_links()
+
+
 
 
 
