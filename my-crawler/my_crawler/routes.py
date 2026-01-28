@@ -17,7 +17,7 @@ async def default_handler(context: PlaywrightCrawlingContext) -> None:
             'content': (await process_data(await context.page.content())),
         }
     )
-
+J
     await context.enqueue_links()
 
 

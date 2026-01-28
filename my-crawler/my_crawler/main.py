@@ -2,7 +2,7 @@ from crawlee.crawlers import PlaywrightCrawler
 from crawlee.http_clients import HttpxHttpClient
 from .routes import router
 
-async def main() -> None:
+async def main(url: str) -> None:
     """The crawler entry point."""
     crawler = PlaywrightCrawler(
         request_handler=router,
@@ -14,6 +14,6 @@ async def main() -> None:
 
     await crawler.run(
         [
-            'https://www.linkedin.com/in/joegoh42/',
+            url,
         ]
     )
