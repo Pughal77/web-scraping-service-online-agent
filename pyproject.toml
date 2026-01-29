@@ -1,7 +1,16 @@
 [project]
-name = "web-scraping-service-online-agent"
-version = "0.1.0"
-description = "Add your description here"
+name = "my-crawler"
+version = "0.0.1"
+description = ""
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = []
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "crawlee[playwright,httpx]",
+    "fastapi>=0.128.0",
+    "uvicorn>=0.40.0",
+]
+
