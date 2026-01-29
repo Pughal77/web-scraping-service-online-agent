@@ -22,7 +22,7 @@ Finally, launch the crawler with:
 uv run python -m my_crawler
 ```
 
-To launch it as a server (hosted on port 8004 by default)
+To launch it as a locally hosted server (hosted on port 8004 by default)
 ```
 python main.py
 ```
@@ -31,7 +31,7 @@ Send a test post request to the endpoint '/crawl'
 ```
 curl -X POST "http://127.0.0.1:8004/crawl?url=https://www.rabbitmq.com/tutorials/tutorial-two-python"
 ```
-Check my_crawler/storage for the scrapped text from the specified website
+Check my_crawler/storage for the scrapped text from the specified website!
 
 
 Things to take note:
@@ -39,6 +39,3 @@ For demo purposes, we are using crawlee straight from the cloud.
 For an isolated instance of crawlee (for security and privacy),
     - There is an github repo that is available (apify/crawlee) but we are unsure how to use it after building it. Probably adding another python script or js file (unsure how to import newly built modules or libraries)
     - Disabling telemetry is also needed (or gutting relavant telemetry, otlp, OpenTelemetry, and analytics, stub those functions)
-
-
-The crawler retrieves the html page, does some processing and then pushes it to the queue
