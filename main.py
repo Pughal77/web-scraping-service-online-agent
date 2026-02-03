@@ -10,7 +10,7 @@ def read_root():
     return {"message": "Hello from your uv-managed FastAPI app!"}
 
 @app.post("/crawl")
-async def crawl(url: str):
+async def crawl(url: str = fastapi.Body(..., embed=True)):
     await crawl_page(url)
     return {"status": "Crawling started"}
 
