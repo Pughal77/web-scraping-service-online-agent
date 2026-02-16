@@ -17,9 +17,7 @@ QUEUE_IN = "url_queue" # recieved from search engine service
 QUEUE_OUT = "text_queue" # going to embedding model
 
 # Connection strings
-redis_host = os.getenv("REDIS_HOST", "localhost")
 rmq_host = os.getenv("RABBITMQ_HOST", "localhost")
-redis_url = f"redis://{redis_host}:6379"
 rmq_url = f"amqp://admin:password123@{rmq_host}:5672/"
 
 async def process_message(message: aio_pika.IncomingMessage, app: FastAPI, channel: aio_pika.Channel):
