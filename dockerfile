@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN playwright install chromium --with-deps
 RUN crawl4ai-setup
 
-COPY main.py .
+COPY . .
 RUN chown -R appuser:appuser /app
 USER appuser
 
