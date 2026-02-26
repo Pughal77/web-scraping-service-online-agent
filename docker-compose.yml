@@ -4,14 +4,70 @@ services:
     init: true
     ports:
       - "8000:8000"
+    environment:
+      - LIGHTPANDA_URL=ws://lightpanda:9222
     networks:
       - infrastructure-net
+      - web-scraper-net
     volumes:
       - .:/app  # This is fine
       - ./data:/home/appuser/.crawl4ai
-    shm_size: '1gb'  # Increase shared memory size for headless browsers
+    depends_on:
+      rabbitmq-broker:
+          condition: service_healthy
+      redis-state-store:
+        condition: service_healthy
+      lightpanda:
+        condition: service_started
+
+
+  # This replaces the 400MB of Chromium in your app container
+  lightpanda:
+    image: lightpanda/browser:latest
+    environment:
+      - HOST=0.0.0.0
+      - PORT=9222
+      - LIGHTPANDA_DISABLE_TELEMETRY=true 
+    ports:
+      - "9222:9222"
+    networks:
+      - web-scraper-net
+  
+  redis-state-store:
+    image: redis:alpine
+    container_name: redis_service
+    networks:
+      - infrastructure-net
+    ports:
+      - "6379:6379"  # Maps host 6379 to internal 6379
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # RabbitMQ: Your message broker
+  rabbitmq-broker:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_service
+    networks:
+      - infrastructure-net
+    ports:
+      - "5672:5672"   # Maps host 5672 to internal 5672 (AMQP)
+      - "15672:15672" # Management UI (Dashboard)
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password123
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   infrastructure-net:
-    external: true # set to driver: bridge if you want to create a new one instead of using the existing onej
-    name: online-agent_default
+    driver: bridge # set to 'driver: bridge' if you want to create a new one instead of using the existing onej, set to 'external: true' other wise
+  web-scraper-net:
+    driver: bridge
